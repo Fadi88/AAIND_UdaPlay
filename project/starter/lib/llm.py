@@ -9,6 +9,7 @@ from lib.messages import (
     UserMessage,
 )
 from lib.tooling import Tool
+import os
 
 
 class LLM:
@@ -22,9 +23,10 @@ class LLM:
         self.model = model
         self.temperature = temperature
         self.base_url = "https://openai.vocareum.com/v1"
-        self.client = (
-            OpenAI(api_key=api_key, base_url=self.base_url) if api_key else OpenAI()
+        self.client = OpenAI(
+            api_key=os.getenv("OPENAI_API_KEY"), base_url=self.base_url
         )
+
         self.tools: Dict[str, Tool] = {tool.name: tool for tool in (tools or [])}
 
     def register_tool(self, tool: Tool):
